@@ -1,0 +1,23 @@
+# Bloqueia execução de PHP na pasta de imagens
+
+# Desabilita execução CGI
+Options -ExecCGI
+
+# Trate arquivos PHP como texto plano nesta pasta (fallback)
+AddType text/plain .php .phtml .php3 .php4 .php5 .php7 .php8 .phps
+AddHandler default-handler .php .phtml .php3 .php4 .php5 .php7 .php8 .phps
+
+# Apache 2.4+
+<IfModule mod_authz_core.c>
+  <FilesMatch "\.(php|phtml|php[0-9]|phps)$">
+    Require all denied
+  </FilesMatch>
+</IfModule>
+
+# Apache 2.2 fallback
+<IfModule !mod_authz_core.c>
+  <FilesMatch "\.(php|phtml|php[0-9]|phps)$">
+    Order allow,deny
+    Deny from all
+  </FilesMatch>
+</IfModule>

@@ -105,6 +105,21 @@ Dica: você pode ajustar esses valores pelo painel admin (se já houver telas pa
 - Autenticação persistente: `php/login.php` gera `auth_token` (cookie `httponly`, `secure`, `samesite=Strict`) e salva em `bet_usuarios.bet_token`.
 - Callbacks: `callback_deposito.php` e `callback_retirada.php` validam assinatura HMAC baseada no corpo (`php://input`) com o token LotusPay.
 - `.htaccess`: Necessário para garantir o repasse do header `Authorization`/assinaturas em alguns ambientes.
+ - Endurecimento de diretórios: adicionado `.htaccess` em `imagens/` para impedir execução de PHP e em `logs/` para negar acesso web aos logs.
+
+
+## Logs de callbacks
+Os callbacks de depósito e retirada registram eventos em `logs/callback.log` no formato de linhas JSON.
+
+O que é registrado:
+- Tipo do callback (`callback_deposito` ou `callback_retirada`).
+- Timestamp ISO (`ts`).
+- Mensagem de status (ex.: método inválido, assinatura válida/inválida, processamento aprovado, saldo atualizado).
+- Contexto mínimo (IP remoto, tamanho do payload, ID da transação, usuário e valor quando aplicável). Dados sensíveis não são gravados.
+
+Segurança e manutenção:
+- O diretório `logs/` possui `.htaccess` negando acesso via HTTP.
+- Recomenda-se fazer rotação periódica do arquivo (ex.: logrotate, ou simplesmente copiando o arquivo e recriando) e ajustar permissões de arquivo para leitura/escrita apenas pelo usuário do PHP.
 
 
 ## Dicas para produção
@@ -137,6 +152,6 @@ Este projeto é fornecido “como está”, sem garantia ou responsabilidade alg
 
 
 ## Créditos
-- Gateway: Oficial Gerapix, Desenvolvido por https://t.me/viniciuscambio
+- Gateway: Oficial Gerapix/Gerabet, Desenvolvido por viniciuscambio
 - Integração de jogos: PlayFiver.
 - PHPMailer incluído no diretório `phpmailer/` para envio de e-mails (configurável via `bet_email_*` em `bet_adm_config`).
