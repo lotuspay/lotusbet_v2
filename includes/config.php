@@ -29,8 +29,8 @@ try {
     $TokenLotusPay = !empty($config['bet_lotuspay'])  ? $config['bet_lotuspay']  : 'fallback_token_lotuspay';
     
     // Split LotusPay
-    $LoginSplit = 'srmilho';
-    $PorcentagemSplit = '10';
+    $LoginSplit = '';
+    $PorcentagemSplit = '';
 
     $TokenPlayFiverPublico = !empty($config['bet_playfiver_publico'])  ? $config['bet_playfiver_publico']  : '';
     $TokenPlayFiverSecreto = !empty($config['bet_playfiver_secreto'])  ? $config['bet_playfiver_secreto']  : '';

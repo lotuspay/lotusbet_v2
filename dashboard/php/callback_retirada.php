@@ -1,6 +1,7 @@
 <?php
 require_once '../../includes/db.php';
 require_once '../../includes/config.php';
+require_once '../../includes/integrity_guard.php';
 
 // Simple file logger for callbacks
 function log_callback($type, $message, $context = []) {
@@ -28,6 +29,9 @@ if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
     http_response_code(405);
     exit;
 }
+
+$__int_guard = true;
+lotus_integrity_verify();
 
 $payload = file_get_contents('php://input'); // corpo bruto
 log_callback('callback_retirada', 'Request received', [

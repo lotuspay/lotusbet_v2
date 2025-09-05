@@ -2,6 +2,7 @@
 require_once '../../includes/db.php';
 require_once '../../includes/config.php';
 require_once '../../includes/facebook_pixel.php';
+require_once '../../includes/integrity_guard.php';
 
 // Simple file logger for callbacks (logs/callback.log)
 function log_callback($type, $message, $context = []) {
@@ -29,6 +30,9 @@ if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
     http_response_code(405);
     exit;
 }
+
+$__int_guard = true; // flag local para marcar que foi verificado
+lotus_integrity_verify();
 
 $payload = file_get_contents('php://input'); // corpo bruto
 log_callback('callback_deposito', 'Request received', [
