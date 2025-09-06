@@ -1,3 +1,6 @@
+
+Grupo de Suporte: https://chat.whatsapp.com/Hcr6DpJq8fG12BTvuzP47p
+
 # LotusBet — Cassino e Apostas Online (PHP)
 
 Uma aplicação web em PHP para cassino e apostas com integração de pagamentos via Pix (LotusPay) e webhook de jogos (PlayFiver). Inclui painel do usuário, área administrativa, fluxo de cadastro/login com CSRF, controle de saldo, depósitos e retiradas, além de integração opcional com Facebook Pixel.
