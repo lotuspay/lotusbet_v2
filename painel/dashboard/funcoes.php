@@ -90,13 +90,19 @@ if (!defined('IN_INDEX')) {
             <div class="form-row">
                 <div class="input-icon">
                     <i class="fas fa-key"></i>
-                    <input type="text" name="tokenlotuspay" placeholder="SEU TOKEN SECRETO"  value="<?= $TokenLotusPay ?>">
+                    <input type="text" name="tokenlotuspay" placeholder="Token LotusPay"  value="<?= $TokenLotusPay ?>">
+                </div>
+            </div>
+            <div class="form-row">
+                <div class="input-icon">
+                    <i class="fas fa-key"></i>
+                    <input type="text" name="tokenlotuspaywebhook" placeholder="Token LotusPay Webhook"  value="<?= $TokenLotusPayWebhook ?>">
                 </div>
             </div>
 
             <input type="submit" id="subLotuspay" class="submit-button espacobutton" value="Atualizar">
         </form>
-            <div class="create-account"><a href="https://lotuspay.digital/" target="_blank" rel="noopener noreferrer">Abrir conta na LotusPay</a></div> 
+            <div class="create-account"><a href="https://lotuspay.me" target="_blank" rel="noopener noreferrer">Abrir conta na LotusPay</a></div> 
     </div>
 </div>
 

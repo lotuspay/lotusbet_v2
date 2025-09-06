@@ -27,7 +27,8 @@ try {
     $TipoPagamento = isset($config['bet_pag_tipo']) ? (int)$config['bet_pag_tipo'] : 0;
 
     $TokenLotusPay = !empty($config['bet_lotuspay'])  ? $config['bet_lotuspay']  : 'fallback_token_lotuspay';
-    
+    $TokenLotusPayWebhook = !empty($config['bet_lotuspay_webhook'])  ? $config['bet_lotuspay_webhook']  : 'fallback_token_lotuspay_webhook';
+
     // Split LotusPay
     $LoginSplit = '';
     $PorcentagemSplit = '';

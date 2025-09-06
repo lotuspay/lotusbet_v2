@@ -51,6 +51,7 @@ INSERT INTO `bet_adm` (`id`, `adm_email`, `adm_senha`, `adm_token`, `adm_status`
 CREATE TABLE `bet_adm_config` (
   `id` int(11) NOT NULL,
   `bet_lotuspay` varchar(100) COLLATE utf8_unicode_ci NOT NULL DEFAULT '',
+  `bet_lotuspay_webhook` varchar(100) COLLATE utf8_unicode_ci NOT NULL DEFAULT '',
   `bet_playfiver_publico` varchar(255) COLLATE utf8_unicode_ci NOT NULL DEFAULT '',
   `bet_playfiver_secreto` varchar(255) COLLATE utf8_unicode_ci NOT NULL DEFAULT '',
   `bet_valor_deposito` decimal(10,2) NOT NULL,

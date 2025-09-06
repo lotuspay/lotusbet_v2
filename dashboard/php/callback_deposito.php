@@ -43,7 +43,7 @@ log_callback('callback_deposito', 'Request received', [
 
 // Verificar assinatura HMAC (substitui validação por token)
 $receivedSignature = $_SERVER['HTTP_LOTUSPAY_SIGNATURE'] ?? '';
-$expectedSignature = hash_hmac('sha256', $payload, $TokenLotusPay);
+$expectedSignature = hash_hmac('sha256', $payload, $TokenLotusPayWebhook);
 
 if (!$receivedSignature || !hash_equals($expectedSignature, $receivedSignature)) {
     log_callback('callback_deposito', 'Signature mismatch', []);
