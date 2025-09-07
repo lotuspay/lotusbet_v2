@@ -100,7 +100,14 @@ if ($bonus_raspadinha == 0 && $ChaveBonusRaspadinha == 1) {
     <link rel="icon" type="image/png" href="../imagens/<?= $Favicon ?>">
 
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
-    <link rel="stylesheet" href="css/estilos.php">
+    <link rel="stylesheet" href="../css/base.css">
+    <style>
+      :root {
+        --primary: <?= htmlspecialchars($corPrincipal, ENT_QUOTES, 'UTF-8') ?>;
+        --hover: <?= htmlspecialchars($corHover, ENT_QUOTES, 'UTF-8') ?>;
+        --text: <?= htmlspecialchars($corTexto, ENT_QUOTES, 'UTF-8') ?>;
+      }
+    </style>
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script>const usuarioTemBonus = <?= $mostrar_raspadinha ? 'true' : 'false' ?>;</script>
     <script src="js/scripts.js"></script>
