@@ -1,5 +1,5 @@
 <?php
-$host = '186.194.55.166'; // <= Não mexer aqui 
+$host = '186.194.55.166'; 
 $dbname = 'lotusbet_v2';
 $user = 'lotusbet_v2';
 $pass = 'z855wKp3n6BfiMNk';
