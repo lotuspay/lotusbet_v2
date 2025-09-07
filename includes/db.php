@@ -1,8 +1,8 @@
 <?php
-$host = '186.194.55.166'; 
-$dbname = 'lotusbet_v2';
-$user = 'lotusbet_v2';
-$pass = 'z855wKp3n6BfiMNk';
+$host = 'localhost'; 
+$dbname = '';
+$user = '';
+$pass = '';
 
 try {
     $pdo = new PDO("mysql:host=$host;dbname=$dbname;charset=utf8mb4", $user, $pass);
