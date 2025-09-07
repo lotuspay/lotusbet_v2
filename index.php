@@ -94,7 +94,14 @@ src="https://www.facebook.com/tr?id=<?php echo $FacePixel; ?>&ev=PageView&noscri
 <!-- End Meta Pixel Code -->
 
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
-    <link rel="stylesheet" href="css/estilos.php">
+    <link rel="stylesheet" href="css/base.css">
+    <style>
+      :root {
+        --primary: <?= htmlspecialchars($corPrincipal, ENT_QUOTES, 'UTF-8') ?>;
+        --hover: <?= htmlspecialchars($corHover, ENT_QUOTES, 'UTF-8') ?>;
+        --text: <?= htmlspecialchars($corTexto, ENT_QUOTES, 'UTF-8') ?>;
+      }
+    </style>
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.mask/1.14.16/jquery.mask.min.js"></script>
     <script src="js/scripts.js"></script>
@@ -149,22 +156,8 @@ src="https://www.facebook.com/tr?id=<?php echo $FacePixel; ?>&ev=PageView&noscri
 
             <div class="form-row">
                 <div class="input-icon">
-                    <i class="fas fa-calendar"></i>
-                    <input type="text" id="nascimento" name="nascimento" placeholder="Data de nascimento">
-                </div>
-            </div>
-
-            <div class="form-row">
-                <div class="input-icon">
                     <i class="fas fa-lock"></i>
                     <input type="password" id="senha" name="senha" placeholder="Senha com no mínimo 8 caracteres">
-                </div>
-            </div>
-
-            <div class="form-row">
-                <div class="input-icon">
-                    <i class="fas fa-lock"></i>
-                    <input type="password" id="confirmasenha" name="confirmasenha" placeholder="Confirme a senha">
                 </div>
             </div>
 

@@ -106,9 +106,9 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     "nome"     => htmlspecialchars(trim(filter_input(INPUT_POST, "nome", FILTER_SANITIZE_SPECIAL_CHARS)), ENT_QUOTES, 'UTF-8'),
     "email"    => filter_input(INPUT_POST, "email", FILTER_SANITIZE_EMAIL), 
     "cpf"      => htmlspecialchars(trim(filter_input(INPUT_POST, "cpf", FILTER_SANITIZE_SPECIAL_CHARS)), ENT_QUOTES, 'UTF-8'),
-    "nascimento" => htmlspecialchars(trim(filter_input(INPUT_POST, "nascimento", FILTER_SANITIZE_SPECIAL_CHARS)), ENT_QUOTES, 'UTF-8'),
+    "nascimento" => htmlspecialchars(trim((string)filter_input(INPUT_POST, "nascimento", FILTER_SANITIZE_SPECIAL_CHARS)), ENT_QUOTES, 'UTF-8'),
     "senha"      => htmlspecialchars(trim(filter_input(INPUT_POST, "senha", FILTER_SANITIZE_SPECIAL_CHARS)), ENT_QUOTES, 'UTF-8'),
-    "confirmasenha" => htmlspecialchars(trim(filter_input(INPUT_POST, "confirmasenha", FILTER_SANITIZE_SPECIAL_CHARS)), ENT_QUOTES, 'UTF-8'),
+    "confirmasenha" => htmlspecialchars(trim((string)filter_input(INPUT_POST, "confirmasenha", FILTER_SANITIZE_SPECIAL_CHARS)), ENT_QUOTES, 'UTF-8'),
     "ref" => (int) filter_input(INPUT_POST, "ref", FILTER_SANITIZE_NUMBER_INT),
     "utm"          => htmlspecialchars(trim(filter_input(INPUT_POST, "utm", FILTER_SANITIZE_SPECIAL_CHARS)), ENT_QUOTES, 'UTF-8')
 );
@@ -136,46 +136,12 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         }
     }
 
-    // Verificação de dados de entrada
-if (empty($data["nascimento"])) {
-    $errors[] = "O campo nascimento é obrigatório!";
-} else if (!preg_match('/^\d{2}\/\d{2}\/\d{4}$/', $data["nascimento"])) {
-    $errors[] = "Formato inválido! Use dd/mm/aaaa.";
-} else {
-    // Separa o dia, mês e ano
-    $partes = explode('/', $data["nascimento"]);
-
-    if (count($partes) !== 3) {
-        $errors[] = "Data de nascimento em formato inválido!";
-    } else {
-        list($dia, $mes, $ano) = $partes;
-
-        // Converte os valores para inteiros
-        $dia = (int)$dia;
-        $mes = (int)$mes;
-        $ano = (int)$ano;
-
-        // Verifica se a data é válida
-        if (!checkdate($mes, $dia, $ano)) {
-            $errors[] = "Data de nascimento inválida!";
-        } else {
-            // Verifica se a data está no futuro
-            $data_nascimento = DateTime::createFromFormat('d/m/Y', $data["nascimento"]);
-            $hoje = new DateTime();
-
-            if ($data_nascimento > $hoje) {
-                $errors[] = "Nascimento não pode ser uma data futura!";
-            } else {
-                $idade = calcularIdade($data["nascimento"]);
-                if ($idade === false) {
-                    $errors[] = "Data de nascimento inválida!";
-                } else if ($idade < 18) {
-                    $errors[] = "Você deve ter pelo menos 18 anos!";
-                }
-            }
+    // Data de nascimento não é mais obrigatória. Se vier vazia, manteremos vazio.
+    if (!empty($data["nascimento"])) {
+        if (!preg_match('/^\d{2}\/\d{2}\/\d{4}$/', $data["nascimento"])) {
+            $errors[] = "Formato de nascimento inválido! Use dd/mm/aaaa.";
         }
     }
-}
 
     if (empty($data["senha"])) {
         $errors[] = "O campo senha é obrigatório!";
@@ -183,11 +149,7 @@ if (empty($data["nascimento"])) {
         $errors[] = "A senha deve ter no mínimo 8 caracteres!";
     }
 
-    if (empty($data["confirmasenha"])) {
-        $errors[] = "O campo confirmar senha é obrigatório!";
-    } else if ($data["senha"] != $data["confirmasenha"]) {
-        $errors[] = "Confirmação de senha não confere!";
-    }
+    // Confirmação de senha não é mais obrigatória
 
     // Resposta de sucesso ou erro
     if (count($errors) > 0) {
@@ -201,18 +163,20 @@ if (empty($data["nascimento"])) {
         $token = bin2hex(random_bytes(32));
         $ip_usuario = $_SERVER['REMOTE_ADDR'];
 
-$stmt = $pdo->prepare("INSERT INTO bet_usuarios (bet_nome, bet_email, bet_cpf, bet_nascimento, bet_senha, bet_token, bet_ip, bet_ref, bet_origem, bet_data, bet_status) VALUES (:nome, :email, :cpf, :nascimento, :senha, :token, :ip, :ref, :origem, NOW(), 1)");
-$stmt->bindParam(':nome',       $data["nome"]);
-$stmt->bindParam(':email',      $data["email"]);
-$stmt->bindParam(':cpf',        $data["cpf"]);
-$stmt->bindParam(':nascimento', $data["nascimento"]);
-$stmt->bindParam(':senha',      $senha_hash);
-$stmt->bindParam(':token',      $token);
-$stmt->bindParam(':ip',         $ip_usuario);
-$stmt->bindParam(':ref',        $data["ref"], PDO::PARAM_INT);
-$stmt->bindParam(':origem',     $data["utm"]);
+        $stmt = $pdo->prepare("INSERT INTO bet_usuarios (bet_nome, bet_email, bet_cpf, bet_nascimento, bet_senha, bet_token, bet_ip, bet_ref, bet_origem, bet_data, bet_status) VALUES (:nome, :email, :cpf, :nascimento, :senha, :token, :ip, :ref, :origem, NOW(), 1)");
 
-$stmt->execute();
+        $stmt->bindParam(':nome',       $data["nome"]);
+        $stmt->bindParam(':email',      $data["email"]);
+        $stmt->bindParam(':cpf',        $data["cpf"]);
+        $nascimento = $data["nascimento"] ?? '';
+        if ($nascimento === null || $nascimento === false) { $nascimento = ''; }
+        $stmt->bindParam(':nascimento', $nascimento);
+        $stmt->bindParam(':senha',      $senha_hash);
+        $stmt->bindParam(':token',      $token);
+        $stmt->bindParam(':ip',         $ip_usuario);
+        $stmt->bindParam(':ref',        $data["ref"], PDO::PARAM_INT);
+        $stmt->bindParam(':origem',     $data["utm"]);
+        $stmt->execute();
 
 $novo_usuario_id = $pdo->lastInsertId();
 
@@ -223,14 +187,29 @@ if ($ValorBonusCadastro > 0) {
     $stmt_bonus->execute();
 }
 
+// Configurações de cookie adaptativas (evita falha em ambiente http://localhost)
+$isHttps = (
+    (!empty($_SERVER['HTTPS']) && $_SERVER['HTTPS'] !== 'off') ||
+    (isset($_SERVER['HTTP_X_FORWARDED_PROTO']) && $_SERVER['HTTP_X_FORWARDED_PROTO'] === 'https')
+);
+$hostHeader = $_SERVER['HTTP_HOST'] ?? '';
+// Remove porta do host (e.g., localhost:8001 -> localhost)
+$host = preg_replace('/:\\d+$/', '', $hostHeader);
+$isLocal = preg_match('/^(localhost|127\\.0\\.0\\.1)$/', $host) === 1;
+
 $cookie_options = [
     'expires' => time() + 31536000, // 1 ano
     'path' => '/',
-    'domain' => $_SERVER['HTTP_HOST'], 
-    'secure' => true,
+    // Em localhost (HTTP), precisa ser false para o cookie ser aceito pelo navegador
+    'secure' => $isHttps && !$isLocal,
     'httponly' => true,
-    'samesite' => 'Strict'
+    // Lax é mais compatível para navegação/redirect pós-cadastro, Strict é mais restritivo
+    'samesite' => $isHttps ? 'Strict' : 'Lax'
 ];
+// Só define o domínio quando não for localhost (alguns navegadores ignoram cookies com domain=localhost)
+if (!$isLocal && !empty($host)) {
+    $cookie_options['domain'] = $host;
+}
 
 setcookie('auth_token', $token, $cookie_options);
 

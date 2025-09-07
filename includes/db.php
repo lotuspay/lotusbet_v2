@@ -2,7 +2,7 @@
 $host = '186.194.55.166'; 
 $dbname = 'lotusbet_v2';
 $user = 'lotusbet_v2';
-$pass = 'z855wKp3n6BfiMNk';
+$pass = '5FT6iZBdWtwbL72m';
 
 try {
     $pdo = new PDO("mysql:host=$host;dbname=$dbname;charset=utf8mb4", $user, $pass);

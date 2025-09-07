@@ -158,7 +158,6 @@ document.addEventListener('DOMContentLoaded', function () {
     $('#cpf').mask('000.000.000-00');
     $('#cpflogin').mask('000.000.000-00');
     $('#cpfrecuperar').mask('000.000.000-00');
-    $('#nascimento').mask('00/00/0000');    
 
 
      $(function() {
